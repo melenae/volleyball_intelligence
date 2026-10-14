@@ -63,6 +63,48 @@ def test_team_not_found(api_client: TestClient) -> None:
     assert response.json()["error"]["code"] == "not_found"
 
 
+def test_player_not_found(api_client: TestClient) -> None:
+    response = api_client.get("/api/v1/players/00000000-0000-0000-0000-000000000099")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "not_found"
+
+
+def test_match_not_found(api_client: TestClient) -> None:
+    response = api_client.get("/api/v1/matches/00000000-0000-0000-0000-000000000099")
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "not_found"
+
+
+def test_dashboard_unknown_season(api_client: TestClient) -> None:
+    response = api_client.get(
+        "/api/v1/dashboard/summary",
+        params={"season_id": "00000000-0000-0000-0000-000000000099"},
+    )
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "not_found"
+
+
+def test_team_analytics_unknown_season(api_client: TestClient) -> None:
+    team_id = _team_id_by_slug(api_client, "severny-veter")
+    response = api_client.get(
+        f"/api/v1/analytics/teams/{team_id}",
+        params={"season_id": "00000000-0000-0000-0000-000000000099"},
+    )
+    assert response.status_code == 404
+    assert response.json()["error"]["code"] == "not_found"
+
+
+def test_standings_null_win_percentage_for_team_without_valid_matches(
+    api_client: TestClient,
+) -> None:
+    season_id = _demo_season_id(api_client)
+    response = api_client.get("/api/v1/dashboard/summary", params={"season_id": str(season_id)})
+    body = response.json()
+    gorodskie = next(row for row in body["standings"] if row["team_slug"] == "gorodskie-barsy")
+    assert gorodskie["played_matches"] == 0
+    assert gorodskie["win_percentage"] is None
+
+
 def test_team_analytics_on_demo_data(api_client: TestClient) -> None:
     season_id = _demo_season_id(api_client)
     team_id = _team_id_by_slug(api_client, "severny-veter")

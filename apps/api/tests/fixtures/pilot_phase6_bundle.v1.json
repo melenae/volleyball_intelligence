@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "source_label": "phase6-pilot-e2e",
+  "league": {
+    "ref": "pilot6-league",
+    "name": "Пилотная лига Phase 6 (синтетика)",
+    "slug": "pilot6-synthetic-league"
+  },
+  "seasons": [
+    {
+      "ref": "pilot6-season",
+      "name": "Пилотный сезон 2100",
+      "start_date": "2100-01-01",
+      "end_date": "2100-12-31",
+      "league_ref": "pilot6-league"
+    }
+  ],
+  "teams": [
+    {
+      "ref": "pilot6-home",
+      "name": "Пилот Хозяева",
+      "slug": "pilot6-home-team"
+    },
+    {
+      "ref": "pilot6-away",
+      "name": "Пилот Гости",
+      "slug": "pilot6-away-team"
+    }
+  ],
+  "players": [
+    {
+      "ref": "pilot6-player-a",
+      "first_name": "Синт",
+      "last_name": "ИгрокА",
+      "display_name": "Синт ИгрокА",
+      "position": "Связующий"
+    }
+  ],
+  "rosters": [
+    {
+      "team_ref": "pilot6-home",
+      "player_ref": "pilot6-player-a",
+      "season_ref": "pilot6-season",
+      "jersey_number": 6
+    }
+  ],
+  "matches": [
+    {
+      "ref": "pilot6-match-1",
+      "season_ref": "pilot6-season",
+      "home_team_ref": "pilot6-home",
+      "away_team_ref": "pilot6-away",
+      "scheduled_at": "2100-03-20T15:00:00+00:00",
+      "status": "completed",
+      "venue": "Пилотный зал E2E",
+      "sets": [
+        { "set_number": 1, "home_score": 25, "away_score": 18 },
+        { "set_number": 2, "home_score": 25, "away_score": 20 }
+      ]
+    }
+  ]
+}

@@ -4,9 +4,11 @@ import pytest
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session, selectinload
 
+from app.ingestion.constants import IMPORT_SOURCE_FILE
 from app.ingestion.demo.seed import count_domain_rows, seed_demo_league
 from app.ingestion.service import import_file, validate_import_file
-from app.models import IngestionExternalKey, League, Match
+from app.models import IngestionExternalKey, League, Match, Player, Team, TeamRoster
+from app.repositories.ingestion_external_key import IngestionExternalKeyRepository
 
 pytestmark = pytest.mark.postgres
 
@@ -19,6 +21,14 @@ def test_validate_valid_structure() -> None:
     assert report.valid is True
     assert report.schema_version == 1
     assert report.counts["teams"] == 2
+
+
+def test_validate_rejects_invalid_json(tmp_path: Path) -> None:
+    path = tmp_path / "broken.json"
+    path.write_text("{not-json", encoding="utf-8")
+    report = validate_import_file(path)
+    assert report.valid is False
+    assert any(issue.code == "invalid_json" for issue in report.issues)
 
 
 def test_validate_rejects_unknown_schema(tmp_path: Path) -> None:
@@ -162,6 +172,36 @@ def test_transaction_rollback_on_mid_bundle_error(db_session: Session) -> None:
         or 0
     )
     assert after == before == 0
+
+
+def test_summary_counts_empty_and_after_import(db_session: Session) -> None:
+    repo = IngestionExternalKeyRepository(db_session)
+    label = "pytest-import-valid"
+    assert repo.count_by_bundle(label, IMPORT_SOURCE_FILE) == {}
+    import_file(db_session, VALID_BUNDLE, dry_run=False)
+    counts = repo.count_by_bundle(label, IMPORT_SOURCE_FILE)
+    assert counts.get("team", 0) == 2
+    assert counts.get("match", 0) == 1
+    assert repo.count_by_bundle("missing-bundle", IMPORT_SOURCE_FILE) == {}
+
+
+def test_import_preserves_entity_relationships(db_session: Session) -> None:
+    import_file(db_session, VALID_BUNDLE, dry_run=False)
+    league = db_session.scalar(select(League).where(League.slug == "pytest-import-league"))
+    assert league is not None
+    roster = db_session.scalar(
+        select(TeamRoster)
+        .join(Team, TeamRoster.team_id == Team.id)
+        .join(Player, TeamRoster.player_id == Player.id)
+        .where(Team.slug == "pytest-import-alpha", Player.demo_slug == "p1")
+    )
+    assert roster is not None
+    match = db_session.scalar(
+        select(Match).options(selectinload(Match.set_results)).where(Match.venue == "Зал импорта")
+    )
+    assert match is not None
+    assert match.home_team_id == roster.team_id
+    assert len(match.set_results) == 2
 
 
 def test_import_creates_match_with_sets(db_session: Session) -> None:
