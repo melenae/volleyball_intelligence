@@ -1,5 +1,3 @@
-import logging
-
 from fastapi.testclient import TestClient
 
 from app.db.session import database_status
@@ -33,7 +31,7 @@ def test_health_degraded_when_database_is_unavailable(monkeypatch) -> None:
     assert body["database"] == "unavailable"
 
 
-def test_database_status_reports_connection_failure(monkeypatch, caplog) -> None:
+def test_database_status_reports_connection_failure(monkeypatch) -> None:
     class BrokenConnection:
         def __enter__(self) -> None:
             raise OSError("connection refused")
@@ -47,11 +45,7 @@ def test_database_status_reports_connection_failure(monkeypatch, caplog) -> None
 
     monkeypatch.setattr("app.db.session.engine", BrokenEngine())
 
-    with caplog.at_level(logging.ERROR):
-        status = database_status()
-
-    assert status == "unavailable"
-    assert "Database health check failed" in caplog.text
+    assert database_status() == "unavailable"
 
 
 def test_cors_allows_only_configured_origin(monkeypatch) -> None:

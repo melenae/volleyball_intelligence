@@ -12,6 +12,9 @@ class Settings(BaseSettings):
 
     app_env: str = "development"
     database_url: str = "postgresql+psycopg://vi:vi@localhost:5433/volleyball_intelligence"
+    test_database_url: str = (
+        "postgresql+psycopg://vi:vi@localhost:5433/volleyball_intelligence_test"
+    )
     cors_origins: str = "http://localhost:3000"
 
     model_config = SettingsConfigDict(

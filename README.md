@@ -1,6 +1,6 @@
 # Volleyball Intelligence
 
-Аналитическая платформа для любительского волейбола. Сейчас это каркас Phase 1: веб-оболочка, HTTP API и PostgreSQL. Демонстрационные команды, игроки и матчи ещё не загружены. Это не интерфейс и не данные AVL.
+Аналитическая платформа для любительского волейбола. Phase 2: модель данных в PostgreSQL, миграции Alembic и CLI seed вымышленной лиги. Аналитические API и страницы команд ещё не реализованы. Это не интерфейс и не данные AVL.
 
 ## Стек
 
@@ -9,7 +9,7 @@
 - База: PostgreSQL 16
 - Локальный запуск: Docker Compose
 
-SQLAlchemy в этой фазе только проверяет соединение. Таблиц предметной области нет.
+После старта Compose примените миграции и при необходимости загрузите demo-данные (см. ниже).
 
 ## Требования
 
@@ -27,7 +27,19 @@ Copy-Item .env.example .env
 docker compose up --build
 ```
 
-После успешного старта:
+После успешного старта примените миграции и seed:
+
+```powershell
+docker compose exec api alembic upgrade head
+docker compose exec api python -m app.ingestion.demo.seed
+```
+
+Локально без Docker (из `apps\api`, при работающей БД на порту 5433):
+
+```powershell
+uv run alembic upgrade head
+uv run python -m app.ingestion.demo.seed
+```
 
 - приложение: http://localhost:3000
 - health API: http://localhost:8000/api/v1/health
@@ -60,4 +72,4 @@ npm run build
 
 ## Что сознательно отсутствует
 
-Модели лиги, seed, аналитика, страницы команд, игроков и матчей, авторизация и интеграция с AVL. Правила будущего матча и идемпотентного seed записаны в `docs/decisions/0001-confirmed-architecture.md`.
+Аналитические расчёты и API, страницы команд, игроков и матчей, импорт CSV/JSON, авторизация и интеграция с AVL. Модель и правила матча: `docs/data-model.md`, `docs/match-result-validity.md`.

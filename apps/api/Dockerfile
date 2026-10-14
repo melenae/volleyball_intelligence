@@ -13,6 +13,8 @@ ENV UV_COMPILE_BYTECODE=1 \
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
+COPY alembic.ini ./
+COPY migrations ./migrations
 COPY app ./app
 
 EXPOSE 8000

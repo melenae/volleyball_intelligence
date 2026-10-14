@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "HTTP API for Volleyball Intelligence"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.14",
     "fastapi>=0.115",
     "uvicorn[standard]>=0.34",
     "pydantic-settings>=2.6",
@@ -24,6 +25,9 @@ package = false
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+markers = [
+    "postgres: tests that require a running PostgreSQL instance",
+]
 
 [tool.ruff]
 target-version = "py312"
@@ -35,3 +39,6 @@ select = ["E", "F", "I", "UP"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["app"]
+
+[tool.ruff.lint.per-file-ignores]
+"migrations/versions/*.py" = ["E501", "I001", "UP007", "UP035"]
