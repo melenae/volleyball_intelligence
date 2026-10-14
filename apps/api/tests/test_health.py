@@ -64,4 +64,7 @@ def test_openapi_lists_health_endpoint() -> None:
         response = client.get("/openapi.json")
 
     assert response.status_code == 200
-    assert "/api/v1/health" in response.json()["paths"]
+    paths = response.json()["paths"]
+    assert "/api/v1/health" in paths
+    assert "/api/v1/dashboard/summary" in paths
+    assert "/api/v1/analytics/teams/{team_id}" in paths

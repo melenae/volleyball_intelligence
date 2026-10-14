@@ -1,6 +1,6 @@
 # Volleyball Intelligence
 
-Аналитическая платформа для любительского волейбола. Phase 2: модель данных в PostgreSQL, миграции Alembic и CLI seed вымышленной лиги. Аналитические API и страницы команд ещё не реализованы. Это не интерфейс и не данные AVL.
+Аналитическая платформа для любительского волейбола. Phase 3: read-only REST API и расчёт командной статистики по PostgreSQL. Frontend-страницы списков и графиков — в Phase 4. Демо-данные не являются данными AVL.
 
 ## Стек
 
@@ -45,6 +45,7 @@ uv run python -m app.ingestion.demo.seed
 - health API: http://localhost:8000/api/v1/health
 - тот же health через прокси Next.js: http://localhost:3000/api/v1/health
 - OpenAPI: http://localhost:8000/docs
+- примеры API: `docs/api.md` (сезоны, команды, матчи, dashboard, аналитика)
 
 Остановка:
 
@@ -72,4 +73,4 @@ npm run build
 
 ## Что сознательно отсутствует
 
-Аналитические расчёты и API, страницы команд, игроков и матчей, импорт CSV/JSON, авторизация и интеграция с AVL. Модель и правила матча: `docs/data-model.md`, `docs/match-result-validity.md`.
+Страницы UI для команд, игроков и матчей, импорт CSV/JSON, авторизация и интеграция с AVL. Личная матчевая статистика игрока без `MatchEvent`. Документация: `docs/api.md`, `docs/analytics-definitions.md`.
