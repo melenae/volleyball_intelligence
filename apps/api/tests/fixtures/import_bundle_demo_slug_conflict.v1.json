@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "source_label": "demo-slug-conflict",
+  "league": {
+    "ref": "lg-demo",
+    "name": "Новая лига",
+    "slug": "new-league-not-demo"
+  },
+  "seasons": [
+    {
+      "ref": "sn1",
+      "name": "Сезон",
+      "start_date": "2099-01-01",
+      "end_date": "2099-12-31",
+      "league_ref": "lg-demo"
+    }
+  ],
+  "teams": [
+    {
+      "ref": "new-team-ref",
+      "name": "Другая команда",
+      "slug": "severny-veter"
+    }
+  ],
+  "players": [],
+  "matches": []
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "source_label": "pytest-import-valid",
+  "league": {
+    "ref": "lg1",
+    "name": "Тестовая лига импорта",
+    "slug": "pytest-import-league"
+  },
+  "seasons": [
+    {
+      "ref": "sn1",
+      "name": "Сезон 2099",
+      "start_date": "2099-01-01",
+      "end_date": "2099-12-31",
+      "league_ref": "lg1"
+    }
+  ],
+  "teams": [
+    {
+      "ref": "t1",
+      "name": "Импорт Альфа",
+      "slug": "pytest-import-alpha"
+    },
+    {
+      "ref": "t2",
+      "name": "Импорт Бета",
+      "slug": "pytest-import-beta"
+    }
+  ],
+  "players": [
+    {
+      "ref": "p1",
+      "first_name": "Тест",
+      "last_name": "Игрок",
+      "display_name": "Тест Игрок",
+      "position": "Либеро"
+    }
+  ],
+  "rosters": [
+    {
+      "team_ref": "t1",
+      "player_ref": "p1",
+      "season_ref": "sn1",
+      "jersey_number": 12
+    }
+  ],
+  "matches": [
+    {
+      "ref": "m1",
+      "season_ref": "sn1",
+      "home_team_ref": "t1",
+      "away_team_ref": "t2",
+      "scheduled_at": "2099-06-15T18:00:00+00:00",
+      "status": "completed",
+      "venue": "Зал импорта",
+      "sets": [
+        { "set_number": 1, "home_score": 25, "away_score": 20 },
+        { "set_number": 2, "home_score": 25, "away_score": 22 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "source_label": "pytest-import-valid",
+  "league": {
+    "ref": "lg1",
+    "name": "Другое имя лиги",
+    "slug": "pytest-import-league"
+  },
+  "seasons": [
+    {
+      "ref": "sn1",
+      "name": "Сезон 2099",
+      "start_date": "2099-01-01",
+      "end_date": "2099-12-31",
+      "league_ref": "lg1"
+    }
+  ],
+  "teams": [
+    {
+      "ref": "t1",
+      "name": "Импорт Альфа",
+      "slug": "pytest-import-alpha"
+    },
+    {
+      "ref": "t2",
+      "name": "Импорт Бета",
+      "slug": "pytest-import-beta"
+    }
+  ],
+  "players": [
+    {
+      "ref": "p1",
+      "first_name": "Тест",
+      "last_name": "Игрок",
+      "display_name": "Тест Игрок",
+      "position": "Либеро"
+    }
+  ],
+  "rosters": [],
+  "matches": []
+}

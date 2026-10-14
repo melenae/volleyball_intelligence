@@ -1,0 +1,10 @@
+IMPORT_SOURCE_FILE = "file"
+
+ENTITY_LEAGUE = "league"
+ENTITY_SEASON = "season"
+ENTITY_TEAM = "team"
+ENTITY_PLAYER = "player"
+ENTITY_ROSTER = "roster"
+ENTITY_MATCH = "match"
+
+SUPPORTED_SCHEMA_VERSION = 1

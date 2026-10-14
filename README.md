@@ -1,6 +1,6 @@
 # Volleyball Intelligence
 
-Аналитическая платформа для любительского волейбола. Phase 3: read-only REST API и расчёт командной статистики по PostgreSQL. Frontend-страницы списков и графиков — в Phase 4. Демо-данные не являются данными AVL.
+Аналитическая платформа для любительского волейбола. Read-only REST API, frontend MVP и импорт JSON v1 через CLI. Демо-данные не являются данными AVL.
 
 ## Стек
 
@@ -71,6 +71,20 @@ npm run typecheck
 npm run build
 ```
 
+## Импорт данных (Phase 5)
+
+Формат: `docs/ingestion/file-format-v1.md`. Пример: `apps/api/tests/fixtures/import_bundle_valid.v1.json`.
+
+```powershell
+cd apps\api
+uv run python -m app.ingestion.cli validate .\tests\fixtures\import_bundle_valid.v1.json
+uv run python -m app.ingestion.cli import .\tests\fixtures\import_bundle_valid.v1.json --dry-run
+uv run python -m app.ingestion.cli import .\tests\fixtures\import_bundle_valid.v1.json
+uv run python -m app.ingestion.cli summary --bundle "pytest-import-valid"
+```
+
+Demo-seed по-прежнему отдельно: `uv run python -m app.ingestion.demo.seed` (режим upsert фикстуры, не file strict).
+
 ## Что сознательно отсутствует
 
-Страницы UI для команд, игроков и матчей, импорт CSV/JSON, авторизация и интеграция с AVL. Личная матчевая статистика игрока без `MatchEvent`. Документация: `docs/api.md`, `docs/analytics-definitions.md`.
+HTTP-загрузка файлов, CSV, живая интеграция с AVL, авторизация. Личная матчевая статистика игрока без `MatchEvent`. Документация: `docs/api.md`, `docs/analytics-definitions.md`, `docs/ingestion/avl-adapter-placeholder.md`.
